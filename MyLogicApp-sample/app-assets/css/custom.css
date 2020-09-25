@@ -1,0 +1,90 @@
+﻿/* Page Elements */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #dddddd;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #cccccc;
+    }
+
+.card-header button:not(.round), .card-header a:not(.dropdown-item) {
+    padding: 0px 10px;
+}
+
+.card-header h4 {
+    display: inline-block;
+}
+
+/* Form Elements */
+
+.no-label {
+    margin-top: 32px;
+}
+
+.btn.no-label {
+    margin-top: 22px;
+}
+
+.custom-file-label::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: calc(1.4em + 1.269rem);
+    padding: 0.65rem 0.8rem;
+    line-height: 1.4;
+    color: #475F7B;
+    content: "Ara";
+    background-color: #f0f4f7;
+    border-left: inherit;
+    border-radius: 0 0.267rem 0.267rem 0;
+}
+
+/* Table Elements */
+
+.renk-bilgileri th, .renk-bilgileri td {
+    padding: 0.5rem !important;
+}
+
+/* Card Elements */
+
+/*.card-header button {
+    padding:7px 9px 9px 8px !important;
+}*/
+
+/* dxDataGrid Elements */
+
+.dx-widget,  dx-field-item-label-text, dx-loadpanel-message, dx-texteditor-input, .dx-overlay-wrapper input {
+    font-family: "IBM Plex Sans", Helvetica, Arial, serif !important;
+}
+
+.dx-group-cell {
+    font-family: "Rubik", Helvetica, Arial, serif !important;
+    font-weight: 500 !important;
+}
+
+.dx-datagrid-content .dx-datagrid-table .dx-row > td, .dx-datagrid-content .dx-datagrid-table .dx-row > tr > td {
+    vertical-align: middle;
+}
+
+.dx-datagrid .dx-link {
+    color: white;
+    text-decoration: none;
+}
+
+/* ApexCharts Elements */
+
+.apex-custom-donut .apexcharts-tooltip-text-label, .apex-custom-donut .apexcharts-tooltip-text-value {
+    color: white;
+}
