@@ -252,6 +252,16 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyLogicApp-sample.BLL\MyLogicApp-sample.BLL.csproj">
+      <Project>{201066f5-6d91-4238-8ad4-14e2b64f55cf}</Project>
+      <Name>MyLogicApp-sample.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyLogicApp-sample.ENTITY\MyLogicApp-sample.ENTITY.csproj">
+      <Project>{F0A67B39-4416-4C39-A472-D7DC88C5FE1C}</Project>
+      <Name>MyLogicApp-sample.ENTITY</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
