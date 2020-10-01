@@ -187,7 +187,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdimViewModel.cs" />
+    <Compile Include="Models\GorevViewModel.cs" />
     <Compile Include="Models\IsAtamaViewModel.cs" />
+    <Compile Include="Models\IsSureciViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\SemaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -24,5 +24,7 @@ namespace MyLogicApp_sample.ENTITY.Models.WorkFlow
         public virtual User AtananKullanici { get; set; }
         [ForeignKey(nameof(SemaId))]
         public virtual Sema Sema { get; set; }
+        [ForeignKey(nameof(SonAdimId))]
+        public virtual Adim SonAdim { get; set; }
     }
 }
