@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BpmTestProject.BLL.Repository.Workflow;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,6 +27,13 @@ namespace MyLogicApp_sample.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public static int GetTodoCount(string userId)
+        {
+            var repo = new IsAtamaRepo();
+            var count = repo.Queryable().Count(x => x.AtananKullaniciId == userId && !x.TamamlandiMi);
+            return count;
         }
     }
 }

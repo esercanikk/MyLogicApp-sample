@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style>
+        .div-adim {
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    </style>
+}
+
+<div class="row">
+    <h1>İş Ataması Oluşturma</h1>
+    <div class="col-md-3">
+        <form id="form-atama">
+            <fieldset>
+                <div class="form-group">
+                    <label>İş Akış Şeması</label>
+                    <select id="select-semalar" class="form-control" required>
+                        <option selected disabled value="">Seçiniz</option>
+                    </select>
+                    <label>Çalışan</label>
+                    <select id="select-calisanlar" class="form-control" required>
+                        <option selected disabled value="">Seçiniz</option>
+                    </select>
+                    <label>Açıklama</label>
+                    <textarea maxlength="500" id="input-aciklama" class="form-control" required></textarea>
+                    <label>Başlangıç Tarihi</label>
+                    <input type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddMonths(3).ToString("yyyy-MM-dd")" id="input-baslangic-tarihi" class="form-control" required />
+                    <label>Son Tarih</label>
+                    <input type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddMonths(3).ToString("yyyy-MM-dd")" id="input-son-tarih" class="form-control" />
+                    <button type="submit" style="margin-top: 20px" class="btn btn-success btn-block"><i class="glyphicon glyphicon-check"></i> Kaydet</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var formAtama = $("#form-atama");
+        var selectSemalar = $("#select-semalar");
+        var selectCalisanlar = $("#select-calisanlar");
+
+        formAtama.on("submit", formAtama_onSubmit);
+
+        $(document).ready(function () {
+            semalariGetir();
+            calisanlariGetir();
+        });
+
+        function formAtama_onSubmit(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: "/IsAtama/AtamaKaydet",
+                method: "post",
+                data: {
+                    SemaId: selectSemalar.val(),
+                    CalisanId: selectCalisanlar.val(),
+                    Aciklama: $("#input-aciklama").val(),
+                    BaslangicTarihi: $("#input-baslangic-tarihi").val(),
+                    SonTarih: $("#input-son-tarih").val()
+                },
+                success: function (response) {
+                    workflowHub.server.newTodoNotify(selectCalisanlar.val());
+                    alert(response);
+                }
+            });
+        }
+
+        function semalariGetir() {
+            $.ajax({
+                url: "/IsAtama/SemalariGetir",
+                method: "get",
+                success: function (response) {
+                    $.each(response, function (id, text) {
+                        selectSemalar.append($('<option>', {
+                            value: id,
+                            text: text
+                        }));
+                    });
+                }
+            });
+        }
+
+        function calisanlariGetir() {
+            $.ajax({
+                url: "/IsAtama/CalisanlariGetir",
+                method: "get",
+                success: function (response) {
+                    $.each(response, function (id, text) {
+                        selectCalisanlar.append($('<option>', {
+                            value: id,
+                            text: text
+                        }));
+                    });
+                }
+            });
+        }
+    </script>
+}

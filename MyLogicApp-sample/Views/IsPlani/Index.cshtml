@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style>
+        .div-adim {
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    </style>
+}
+
+<div class="row">
+    <h1>İş Planı Akışı Oluşturma</h1>
+    <div class="col-md-3">
+        <form id="form-sema">
+            <fieldset>
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" maxlength="50" id="input-baslik" class="form-control" required />
+                    <label>Açıklama</label>
+                    <textarea maxlength="500" id="input-aciklama" class="form-control"></textarea>
+                    <div id="div-adimlar" style="margin-top: 20px"></div>
+                    <button type="button" id="btn-adim-ekle" class="btn btn-primary btn-block" style="margin:20px 0"><i class="glyphicon glyphicon-plus"></i> Adım Ekle</button>
+                    <button type="submit" class="btn btn-success btn-block"><i class="glyphicon glyphicon-check"></i> Kaydet</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var formSema = $("#form-sema");
+        var btnAdimEkle = $("#btn-adim-ekle");
+        var divAdimlar = $("#div-adimlar");
+
+        formSema.on("submit", formSema_onSubmit);
+        btnAdimEkle.on("click", btnAdimEkle_onClick);
+
+        function formSema_onSubmit(e) {
+            e.preventDefault();
+
+            var adimlar = [];
+
+            for (var i = 0; i < $(".div-adim").length; i++) {
+                adimlar.push({
+                    Baslik: $(".input-adim-baslik")[i].value,
+                    YonlendirmeUrl: $(".input-yonlendirme-url")[i].value
+                });
+            }
+
+            if (adimlar.length > 1) {
+                $.ajax({
+                    url: "/IsPlani/SemaKaydet",
+                    method: "post",
+                    data: {
+                        Baslik: $("#input-baslik").val(),
+                        Aciklama: $("#input-aciklama").val(),
+                        Adimlar: adimlar
+                    },
+                    success: function (response) {
+                        alert(response);
+                    }
+                });
+            }
+            else {
+                alert("Bir şema en az iki adımdan oluşmalıdır!");
+                return;
+            }
+        }
+
+        function btnAdimEkle_onClick() {
+            var adim = getAdimTemplate();
+            divAdimlar.append(adim);
+            $(".btn-adim-sil").on("click", function (e) {
+                var parentDiv = e.target.closest(".div-adim");
+                parentDiv.remove();
+                for (var i = 0; i < $(".div-adim").length; i++) {
+                    $($(".adim-index")[i]).text(i + 1);
+                }
+            });
+            for (var i = 0; i < $(".div-adim").length; i++) {
+                $($(".adim-index")[i]).text(i + 1);
+            }
+        }
+
+        function getAdimTemplate() {
+            return `<div class="div-adim">
+                        <label>Başlık</label>
+                        <input type="text" class="form-control input-adim-baslik" required/>
+                        <label>Yönlendirme URL</label>
+                        <input type="text" class="form-control input-yonlendirme-url" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4><span class="adim-index"></span>. Adım</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-sm btn-danger btn-block btn-adim-sil"><i class="glyphicon glyphicon-remove"></i> Sil</button>
+                            </div>
+                        </div>
+                    </div>`;
+        }
+    </script>    
+}

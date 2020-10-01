@@ -17,6 +17,7 @@ namespace MyLogicApp_sample.ENTITY.Models.WorkFlow
         public string Baslik { get; set; }
         [Required, StringLength(500)]
         public string Aciklama { get; set; }
+        public int AdimSayisi { get; set; }
 
         public virtual ICollection<Baglayici> Baglayicilar { get; set; } = new HashSet<Baglayici>();
     }

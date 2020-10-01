@@ -16,6 +16,7 @@ namespace MyLogicApp_sample.ENTITY.Models.WorkFlow
         public bool TamamlandiMi { get; set; }
         public DateTime? TamamlanmaTarihi { get; set; }
         public Guid SonAdimId { get; set; }
+        public DateTime BaslangicTarihi { get; set; }
         public string AtananKullaniciId { get; set; }
         public Guid SemaId { get; set; }
 
