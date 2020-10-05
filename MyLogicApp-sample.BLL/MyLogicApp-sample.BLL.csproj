@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Account\MembershipTools.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Managers\HomeManager.cs" />
     <Compile Include="Managers\IsAtamaManager.cs" />
     <Compile Include="Managers\IsPlaniManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

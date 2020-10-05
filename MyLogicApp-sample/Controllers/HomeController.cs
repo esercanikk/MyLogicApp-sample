@@ -1,5 +1,6 @@
 ﻿using BpmTestProject.BLL.Repository.Workflow;
 using Microsoft.AspNet.Identity;
+using MyLogicApp_sample.BLL.Managers;
 using MyLogicApp_sample.Models;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,12 @@ namespace MyLogicApp_sample.Controllers
    
     public class HomeController : Controller
     {
+        private readonly HomeManager _homeManager;
+
+        public HomeController()
+        {
+            _homeManager = new HomeManager();
+        }
         public ActionResult Index()
         {
             var model = new List<GorevViewModel>();
@@ -30,7 +37,8 @@ namespace MyLogicApp_sample.Controllers
                         SonTarih = x.SonTarih,
                         AdimSirasi = x.SonAdim.Sira,
                         ToplamAdim = x.Sema.AdimSayisi,
-                        TamamlandiMi = x.TamamlandiMi
+                        TamamlandiMi = x.TamamlandiMi,
+                        YonlendirmeUrl = x.SonAdim.YonlendirmeUrl
                     })
                     .ToList();
             }
@@ -57,6 +65,31 @@ namespace MyLogicApp_sample.Controllers
             var repo = new IsAtamaRepo();
             var count = repo.Queryable().Count(x => x.AtananKullaniciId == userId && !x.TamamlandiMi);
             return count;
+        }
+
+        public static Tuple<string,string> GetTodoNotificationDescription(string userId)
+        {
+            var isAtamaRepo = new IsAtamaRepo().Queryable().Where(x => x.AtananKullaniciId == userId && !x.TamamlandiMi);
+            var semaRepo = new SemaRepo().Queryable();
+
+            var notificationDescription = isAtamaRepo
+                .Join(semaRepo, ia => ia.SemaId, s => s.Id, (ia, s) => new
+                {
+                    IsAtama = ia,
+                    Sema = s
+                })
+                .Select(x => new Tuple<string, string>(x.IsAtama.Aciklama, x.Sema.Baslik)).First();
+
+            return notificationDescription;
+
+        }
+
+        public JsonResult GetNotificationDescription()
+        {
+            var userId = HttpContext.User.Identity.GetUserId();
+            var notificationDescription = _homeManager.GetTodoNotificationDescription(userId);
+
+            return Json(notificationDescription, JsonRequestBehavior.AllowGet);
         }
     }
 }

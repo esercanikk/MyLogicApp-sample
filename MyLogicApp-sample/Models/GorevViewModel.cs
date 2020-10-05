@@ -12,5 +12,6 @@ namespace MyLogicApp_sample.Models
         public int AdimSirasi { get; set; }
         public int ToplamAdim { get; set; }
         public bool TamamlandiMi { get; internal set; }
+        public string YonlendirmeUrl { get; internal set; }
     }
 }

@@ -1,0 +1,106 @@
+﻿
+@model MyLogicApp_sample.Models.IsSureciViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Atanan İş</h2>
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <th>Başlık</th>
+                    <td>@Model.Gorev.Baslik</td>
+                </tr>
+                <tr>
+                    <th>Açıklama</th>
+                    <td>@Model.Gorev.Aciklama</td>
+                </tr>
+                <tr>
+                    <th>Atanma Tarihi</th>
+                    <td>@Model.Gorev.BaslangicTarihi.ToShortDateString()</td>
+                </tr>
+                <tr>
+                    <th>Son Tarih</th>
+                    <td>@(Model.Gorev.SonTarih.HasValue ? Model.Gorev.SonTarih.Value.ToShortDateString(): "Yok")</td>
+                </tr>
+                <tr>
+                    <th>Adım</th>
+                    <td>@Model.Gorev.AdimSirasi / @Model.Gorev.ToplamAdim</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        @if (Model.Gorev.TamamlandiMi)
+        {
+            <h2>Bu görev tamamlanmıştır.</h2>
+        }
+        else
+        {
+            <h2>Şu Anki Adım</h2>
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <th>Adım Sırası</th>
+                        <td>@Model.Adim.Sira</td>
+                    </tr>
+                    <tr>
+                        <th>Başlık</th>
+                        <td>@Model.Adim.Baslik</td>
+                    </tr>
+                    @if (!string.IsNullOrEmpty(Model.Adim.YonlendirmeUrl))
+                    {
+                        <tr>
+                            <th>Link</th>
+                            <td><a href="@Model.Adim.YonlendirmeUrl" class="btn btn-primary btn-block btn-sm">Git</a></td>
+                        </tr>
+                    }
+                    <tr>
+                        <th>Tamamla</th>
+                        <td><button id="btn-tamamla" type="button" class="btn btn-success btn-block btn-sm">Tamamla</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $("#btn-tamamla").on("click", btnTamamla_onClick);
+
+        function btnTamamla_onClick() {
+            if (confirm("Sonraki adıma geçilecektir. Emin misiniz?")) {
+                var aciklama = "";
+                if (@Model.Gorev.ToplamAdim == @Model.Gorev.AdimSirasi) {
+                    aciklama = window.prompt("İşi tamamlamak için açıklama yazınız: ");
+                    if (aciklama == "") {
+                        alert("Açıklama girmediğiniz için işlem tamamlanamadı.");
+                        return;
+                    }
+                }
+
+                $.ajax({
+                    url: "/IsSureci/AdimTamamla",
+                    method: "post",
+                    data: {
+                        id: "@Model.Gorev.IsAtamaId",
+                        aciklama: aciklama
+                    },
+                    success: function (response) {
+                        if (!response)
+                            alert("Sonraki adıma geçilemedi!");
+                        else {
+                            alert("Sonraki adıma başarıyla geçildi.");
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+}
+

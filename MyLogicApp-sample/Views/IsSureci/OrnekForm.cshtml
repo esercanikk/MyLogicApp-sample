@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "OrnekForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <h1>Örnek Form</h1>
+    <div class="col-md-3">
+        <form id="form-ornek">
+            <fieldset>
+                <div class="form-group">
+                    <label>Ad</label>
+                    <input type="text" maxlength="50" id="input-ad" class="form-control" required />
+                    <label>Soyad</label>
+                    <input type="text" maxlength="50" id="input-soyad" class="form-control" required />
+                    <button type="submit" class="btn btn-success btn-block"><i class="glyphicon glyphicon-check"></i> Kaydet</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var formOrnek = $("#form-ornek");
+        formOrnek.on("submit", formOrnek_onSubmit);
+        function formOrnek_onSubmit(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/IsSureci/OrnekForm",
+                method: "post",
+                data: {
+                    ad: $("#input-ad").val(),
+                    soyad: $("#input-soyad").val()
+                },
+                success: function (response) {
+                    alert(response);
+                }
+            });
+        }
+    </script>
+}
