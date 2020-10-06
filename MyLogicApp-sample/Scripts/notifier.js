@@ -112,7 +112,6 @@ function gorevBildiriminiGetir() {
         url: "/Home/GetNotificationDescription",
         method: "get",
         success: function (response) {
-            console.log(response)
             for (var i = 0; i < response.length; i++) {
                 var el = getTaskTemplate(response[i].Item2, response[i].Item1, response[i].Item3, response[i].Item4)
                 $("#list-tasks").append(el);
